@@ -1,1 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Website</title>
+    <style>
+        /* General Reset */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        /* Background GIF */
+        body {
+            background: url('https://github.com/wristlol/dubai/blob/main/bg.gif?raw=true') no-repeat center center fixed;
+            background-size: cover;
+            font-family: Arial, sans-serif;
+            color: white;
+            transition: background-color 1s ease;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        body.unblurred {
+            background-color: rgba(0, 0, 0, 0);
+        }
+
+        /* Load Custom Arabic Font */
+        @font-face {
+            font-family: 'DecoType Thuluth II';
+            src: url('https://github.com/wristlol/dubai/raw/refs/heads/main/DecoType%20Thuluth%20II%20Regular.ttf') format('truetype');
+        }
+
+        /* Centering Content */
+        .container {
+            text-align: center;
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        body.unblurred .container {
+            opacity: 1;
+        }
+
+        /* Profile Picture with Shadow */
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-image: url('https://cdn.discordapp.com/avatars/712551734454517760/e2610a1e89f70a1479a5c06f86e64df6?size=1024');
+            background-size: cover;
+            margin: 0 auto;
+            display: block;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7); /* Black box shadow */
+        }
+
+        /* Bio Section with Shadow */
+        .bio {
+            font-family: 'DecoType Thuluth II', sans-serif;
+            margin: 20px 0;
+            font-size: 2.5em; /* Increased font size */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7); /* Black text shadow */
+        }
+
+        /* Links with Shadow */
+        .links {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .link {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px 25px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-size: 1em;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7); /* Black box shadow */
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); /* Black text shadow */
+        }
+
+        .link:hover {
+            transform: scale(1.2);
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        /* Notification Box */
+        .notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 5px;
+            font-size: 1.2em;
+            display: none;
+            opacity: 0;
+            transition: opacity 1s ease; /* Fade-in and fade-out effect */
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.7);
+            z-index: 200;
+        }
+
+        /* Enter Screen */
+        .enter-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            background-color: rgba(0, 0, 0, 0.7);
+            transition: opacity 1s ease;
+        }
+
+        .enter-screen span {
+            color: white;
+            font-size: 2em;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .enter-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* Hide Audio Player */
+        audio {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="enter-screen" id="enterScreen">
+        <span id="enterText">Click to Enter</span>
+    </div>
+
+    <div class="container">
+        <!-- Profile Picture -->
+        <div class="profile-pic"></div>
+
+        <!-- Bio Section -->
+        <div class="bio">في سباق التميز ليس هناك خط للنهاية</div>
+
+        <!-- Links Section -->
+        <div class="links">
+            <a href="https://namemc.com/profile/Focuses.10" class="link">namemc</a>
+            <a href="https://x.com/3007755" class="link">twitter</a>
+            <a href="#" class="link" id="discordLink">discord</a>
+        </div>
+    </div>
+
+    <!-- Notification Box -->
+    <div class="notification" id="notificationBox">
+        add the user @dubay
+    </div>
+
+    <!-- Background Music -->
+    <audio id="backgroundAudio" loop>
+        <source src="https://github.com/wristlol/dubai/raw/refs/heads/main/song.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <script>
+        const enterScreen = document.getElementById('enterScreen');
+        const body = document.body;
+        const audio = document.getElementById('backgroundAudio');
+        const discordLink = document.getElementById('discordLink');
+        const notificationBox = document.getElementById('notificationBox');
+
+        enterScreen.addEventListener('click', () => {
+            body.classList.add('unblurred');
+            enterScreen.classList.add('hidden');
+            audio.play();
+        });
+
+        discordLink.addEventListener('click', (e) => {
+            e.preventDefault(); // Prevent default behavior of the link
+            notificationBox.style.display = 'block'; // Show the notification
+            notificationBox.style.opacity = 1; // Fade-in the notification
+
+            // Hide the notification after 5 seconds (fade-out)
+            setTimeout(() => {
+                notificationBox.style.opacity = 0; // Fade-out the notification
+                // Hide the notification after the fade-out transition (1s)
+                setTimeout(() => {
+                    notificationBox.style.display = 'none'; // Hide the element completely
+                }, 1000); // Delay to allow the fade-out transition to finish
+            }, 5000); // Notification stays visible for 5 seconds
+        });
+    </script>
+</body>
+</html>
 
